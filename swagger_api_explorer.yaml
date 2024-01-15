@@ -1,0 +1,282 @@
+openapi: 3.0.3
+info:
+  title: Swagger Test HUGEMAN API
+  description: |-
+    This is a sample HUGEMAN API Test
+  contact:
+    email: chayut.eamklan@gmail.com
+  version: 1.0.0
+servers:
+  - url: test
+paths:
+  /update/{id}:
+    patch:
+      tags:
+        - update
+      summary: Update a data by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the item to update
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                created_at:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+                status:
+                  type: string
+              required:
+                - title
+                - status
+                - created_at
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse200Update'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse400'
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse404'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse500'
+  /create:
+    post:
+      tags:
+        - create
+      summary: Create Data
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                title:
+                  type: string
+                description:
+                  type: string
+                created_at:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+                status:
+                  type: string
+              required:
+                - id
+                - title
+                - created_at
+                - status
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse200Create'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse400'
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse404'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse500'
+  /data/{search_value}:
+    get:
+      tags:
+        - data
+      summary: search by title or description
+      parameters:
+        - name: search_value
+          in: path
+          required: true
+          description: ID of the item to update
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse200'
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse404'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse500'
+  /data:
+    get:
+      tags:
+        - data
+      summary: Get All Data
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse200'
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse404'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse500'
+components:
+  schemas:
+    Data:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: string
+          example: a8bba7c9-8ad0-4fb8-a53c-5ce7ecc2f478
+        title:
+          type: string
+          example: test
+        description:
+          type: string
+          example: test
+        created_at:
+          type: string
+          example: 2024-01-15T12:34:56+00:00
+        image:
+          type: string
+          example: qeoiqpoeiqpwo==/
+        status:
+          type: string
+          example: IN_PROGRESS
+    ApiResponse200:
+      type: object
+      properties:
+        error_code:
+          type: string
+          example: 200
+        error_message:
+          type: string
+          example: ""
+        error_detail:
+          type: string
+          example: ""
+        data:
+          type: array
+          items:
+              $ref: '#/components/schemas/Data'
+    ApiResponse400:
+      type: object
+      properties:
+        error_code:
+          type: string
+          example: 400
+        error_message:
+          type: string
+          example: "Field Validation Error"
+        error_detail:
+          type: object
+          example: 
+            status: must be one of IN_PROGRESS COMPLETED
+    ApiResponse404:
+      type: object
+      properties:
+        error_code:
+          type: string
+          example: 404
+        error_message:
+          type: string
+          example: "Data Not Found"
+        error_detail:
+          type: string
+          example: ""
+    ApiResponse500:
+      type: object
+      properties:
+        error_code:
+          type: string
+          example: 500
+        error_message:
+          type: string
+          example: "Can not read file"
+        error_detail:
+          type: string
+          example: ""
+    ApiResponse200Create:
+      type: object
+      properties:
+        error_code:
+          type: string
+          example: 200
+        error_message:
+          type: string
+          example: "'$title name' create success"
+        error_detail:
+          type: string
+          example: ""
+    ApiResponse200Update:
+      type: object
+      properties:
+        error_code:
+          type: string
+          example: 200
+        error_message:
+          type: string
+          example: "'$id' update success"
+        error_detail:
+          type: string
+          example: ""

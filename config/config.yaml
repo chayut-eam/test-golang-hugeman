@@ -1,0 +1,17 @@
+app:
+  name: test-golang-hugeman
+
+apiServer:
+  name: "APIServer"
+  port: "8080"
+  readTimeout: 60000
+  writeTimeout: 60000
+  idleTimeout: 60000
+
+logging:
+  level: debug
+
+healthCheck:
+  cacheDuration: 5000
+  refreshInterval: 5000
+  initialDelay: 1000
